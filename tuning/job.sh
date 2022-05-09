@@ -95,8 +95,16 @@ else
 fi
 
 # 9. Copy output to scratch
+
 # make the dir you need
-mkdir /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
+dir=/network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
+if [ -d "$dir" -a ! -h "$dir" ]
+then
+   echo "Dir exists already"
+else
+   echo "Make checkpoint dir"
+   mkdir /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
+fi
 
 cp -r $SLURM_TMPDIR/CausalSTGCN/checkpoint/exp_$COUNTER/* /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
 cp -r $SLURM_TMPDIR/CausalSTGCN/tuning/results.csv /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
