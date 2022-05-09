@@ -10,7 +10,7 @@
 
 #SBATCH -o /home/mila/j/julia.kaltenborn/slurm-%j.out        # set log dir to home
 
-counter=$1
+COUNTER=$1
 epochs=$2
 stgcn=$3
 tpcnn=$4
