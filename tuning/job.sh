@@ -23,7 +23,7 @@ dataset_num=4
 
 DL_FRAMEWORK="torch"
 
-echo "Beginning experiment $counter for Dataset $dataset_num, with $epochs epochs, $stgcn stgcn, $tpcnn tpcnn, $lr learning rate, $lr_scheduler scheduler, $k kernel_size is concluded."
+echo "Beginning experiment $COUNTER for Dataset $dataset_num, with $epochs epochs, $stgcn stgcn, $tpcnn tpcnn, $lr learning rate, $lr_scheduler scheduler, $k kernel_size is concluded."
 # 1. Load Python
 
 module load python/3.7
@@ -88,16 +88,19 @@ echo "Training CausalSTGCN ..."
 if [[ $lr_scheduler = "true" ]]
 then
   echo "With learning scheduler:"
-  python main.py --exp_id $counter --dataset_num $dataset_num --epochs $epochs --kernel_size $k --lr $lr --stgcn $stgcn --tpcnn $tpcnn --store_csv --lr_scheduler
+  python main.py --exp_id $COUNTER --dataset_num $dataset_num --epochs $epochs --kernel_size $k --lr $lr --stgcn $stgcn --tpcnn $tpcnn --store_csv --lr_scheduler
 else
   echo "Without learning scheduler:"
-  python main.py --exp_id $counter --dataset_num $dataset_num --epochs $epochs --kernel_size $k --lr $lr --stgcn $stgcn --tpcnn $tpcnn --store_csv
+  python main.py --exp_id $COUNTER --dataset_num $dataset_num --epochs $epochs --kernel_size $k --lr $lr --stgcn $stgcn --tpcnn $tpcnn --store_csv
 fi
 
 # 9. Copy output to scratch
-cp -r $SLURM_TMPDIR/CausalSTGCN/checkpoint/exp_{$counter}/* /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/
-cp -r $SLURM_TMPDIR/CausalSTGCN/tuning/results_{$counter}.csv /network/scratch/j/julia.kaltenborn/CausalSTGCN/results/
+# make the dir you need
+mkdir /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
+
+cp -r $SLURM_TMPDIR/CausalSTGCN/checkpoint/exp_$COUNTER/* /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp$COUNTER/
+cp -r $SLURM_TMPDIR/CausalSTGCN/tuning/results.csv /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp$COUNTER/
 
 
 # 10. Experiment is finished
-echo "Experiment $counter for Dataset $dataset_num, with $epochs epochs, $stgcn stgcn, $tpcnn tpcnn, $lr learning rate, $k kernel_size is concluded."
+echo "Experiment $COUNTER for Dataset $dataset_num, with $epochs epochs, $stgcn stgcn, $tpcnn tpcnn, $lr learning rate, $k kernel_size is concluded."
