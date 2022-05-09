@@ -67,14 +67,17 @@ def plot_x(x: np.ndarray, path: str, t: int = 500):
         t = x.shape[1]
 
     for i in range(d):
-        _, axes = plt.subplots(nrows=d_x, ncols=1)
+        fig, axes = plt.subplots(nrows=d_x, ncols=1, sharex=True, sharey=True)
         if d_x == 1:
             # specific case when there is only one gridcell
             axes.plot(x[i_n, :t, i, 0])
         else:
             for i_x in range(d_x):
                 axes[i_x].plot(x[i_n, :t, i, i_x])
-        plt.savefig(os.path.join(path, f'x_{i}.png'))
+                axes[i_x].yaxis.set_visible(False)
+        fig.text(0.5, 0.04, "Time Window", ha='center')
+        fig.text(0.04, 0.5, "Grid Cells", va='center', rotation='vertical')
+        plt.savefig(os.path.join(path, f'x_{i}.pdf'))
         plt.close()
 
 
