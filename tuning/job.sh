@@ -10,14 +10,20 @@
 
 #SBATCH -o /home/mila/j/julia.kaltenborn/slurm-%j.out        # set log dir to home
 
-EPOCHS=$1
-BATCH_SIZE=$2
-LEARNING_RATE=$3
-MODEL=$4
+counter=$1
+epochs=$2
+stgcn=$3
+tpcnn=$4
+lr=$5
+lr_scheduler=$6 # must write "true"
+k=$7
+
+# fixed for the moment
+dataset_num=4
+
 DL_FRAMEWORK="torch"
 
-echo "Beginning experiment with $EPOCHS epochs, $BATCH_SIZE batch size, $LEARNING_RATE learning rate and $MODEL model."
-
+echo "Beginning experiment $counter for Dataset $dataset_num, with $epochs epochs, $stgcn stgcn, $tpcnn tpcnn, $lr learning rate, $lr_scheduler scheduler, $k kernel_size is concluded."
 # 1. Load Python
 
 module load python/3.7
@@ -64,9 +70,9 @@ fi
 
 # 5. Copy data and code from scratch to $SLURM_TMPDIR/
 
-cp -r /network/scratch/j/julia.kaltenborn/caiclone/ $SLURM_TMPDIR/
-rm -r $SLURM_TMPDIR/caiclone/results/
-cp -r /network/scratch/j/julia.kaltenborn/data/ $SLURM_TMPDIR/
+cp -r /network/scratch/j/julia.kaltenborn/CausalSTGCN/ $SLURM_TMPDIR/
+# rm -r $SLURM_TMPDIR/caiclone/results/
+# cp -r /network/scratch/j/julia.kaltenborn/data/ $SLURM_TMPDIR/
 
 # 6. Set Flags
 
@@ -75,18 +81,23 @@ export CUDA_VISIBLE_DEVICES=0
 
 # 7. Change working directory to $SLURM_TMPDIR
 
-cd $SLURM_TMPDIR/caiclone/
+cd $SLURM_TMPDIR/CausalSTGCN/
 
 # 8. Run Python
-
-echo "Running python caiclone_predictor.py ..."
-python caiclone_predictor.py -m $MODEL -e $EPOCHS -b $BATCH_SIZE -l $LEARNING_RATE -i $SLURM_TMPDIR/data/precursor_vort_64x64.npy -t $SLURM_TMPDIR/data/labels_vort_64x64.npy
-
+echo "Training CausalSTGCN ..."
+if [[ $lr_scheduler = "true" ]]
+then
+  echo "With learning scheduler:"
+  python main.py --exp_id $counter --dataset_num $dataset_num --epochs $epochs --kernel_size $k --lr $lr --stgcn $stgcn --tpcnn $tpcnn --store_csv --lr_scheduler
+else
+  echo "Without learning scheduler:"
+  python main.py --exp_id $counter --dataset_num $dataset_num --epochs $epochs --kernel_size $k --lr $lr --stgcn $stgcn --tpcnn $tpcnn --store_csv
+fi
 
 # 9. Copy output to scratch
-cp -r $SLURM_TMPDIR/caiclone/results/* /network/scratch/j/julia.kaltenborn/caiclone/results/
+cp -r $SLURM_TMPDIR/CausalSTGCN/checkpoint/exp_{$counter}/* /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/
+cp -r $SLURM_TMPDIR/CausalSTGCN/tuning/results_{$counter}.csv /network/scratch/j/julia.kaltenborn/CausalSTGCN/results/
 
 
 # 10. Experiment is finished
-
-echo "Experiment with $EPOCHS epochs, $BATCH_SIZE batch size, $LEARNING_RATE learning rate and $MODEL model is concluded."
+echo "Experiment $counter for Dataset $dataset_num, with $epochs epochs, $stgcn stgcn, $tpcnn tpcnn, $lr learning rate, $k kernel_size is concluded."
