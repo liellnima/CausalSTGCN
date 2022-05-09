@@ -11,7 +11,7 @@ from pathlib import Path
 
 from utils import timeKLDivLoss
 from model import CausalSTGCN
-from plotting import plot_losses
+from visualization.plot_loss import plot_losses
 from data_preprocessing import DataProcesser
 
 
