@@ -56,6 +56,7 @@ def main(args):
         pred_seq_len=data_params["timewindow"]+1,
         kernel_size=train_params["spatial_kernel_size"]
     )
+    model.to(device)
 
     # loss function
     loss_func = nn.MSELoss()

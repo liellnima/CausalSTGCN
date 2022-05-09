@@ -212,9 +212,6 @@ class CausalSTGCN(nn.Module):
         # STGCN BLOCKS
 
         for k in range(self.n_stgcn):
-            print(x.dtype)
-            print(A.dtype)
-            exit(0)
             x, A = self.st_gcns[k](x, A)
 
         # TPCNN BLOCKS
