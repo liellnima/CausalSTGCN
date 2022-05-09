@@ -6,7 +6,7 @@
 
 #SBATCH --mem=12G                                        # specify memory
 
-#SBATCH --time=00:50:00                                  # set runtime
+#SBATCH --time=03:00:00                                  # set runtime
 
 #SBATCH -o /home/mila/j/julia.kaltenborn/slurm-%j.out        # set log dir to home
 
