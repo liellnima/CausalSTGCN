@@ -1,0 +1,1 @@
+exp_id,epochs,batch_size,lr,lr_scheduler,optimizer,kernel_size,stgcn,tpcnn,data_id,n,num_gridcells,prob,neighborhood,timewindow,eta,num_features,run_time,train_mse,train_mae,train_kld,valid_mse,valid_mae,valid_kld
