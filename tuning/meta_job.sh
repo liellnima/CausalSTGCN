@@ -10,6 +10,8 @@
 counter=0
 repeat=1 #5
 epochs=500
+#sbatch --partition=unkillable tuning/job.sh 9 3 10 2 0.001 "true" 3
+
 
 for i in $(seq $repeat); do
   for lr in 0.01 0.001; do
