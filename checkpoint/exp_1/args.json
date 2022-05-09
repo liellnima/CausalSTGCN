@@ -1,8 +1,0 @@
-{
-    "batch_size": 32,
-    "epochs": 10,
-    "exp_id": 1,
-    "lr": 0.001,
-    "lr_scheduler": false,
-    "optimizer": "Adam"
-}
