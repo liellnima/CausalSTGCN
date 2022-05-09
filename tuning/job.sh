@@ -98,8 +98,8 @@ fi
 # make the dir you need
 mkdir /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
 
-cp -r $SLURM_TMPDIR/CausalSTGCN/checkpoint/exp_$COUNTER/* /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp$COUNTER/
-cp -r $SLURM_TMPDIR/CausalSTGCN/tuning/results.csv /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp$COUNTER/
+cp -r $SLURM_TMPDIR/CausalSTGCN/checkpoint/exp_$COUNTER/* /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
+cp -r $SLURM_TMPDIR/CausalSTGCN/tuning/results.csv /network/scratch/j/julia.kaltenborn/CausalSTGCN/checkpoint/exp_$COUNTER/
 
 
 # 10. Experiment is finished
